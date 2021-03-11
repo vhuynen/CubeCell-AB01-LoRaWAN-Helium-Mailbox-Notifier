@@ -6,3 +6,7 @@ This project uses an **HelTec AB01** LoRaWAN module to send data over an LoRaWAN
 
 The compromise over this kind of architecture is that you can't send heavy payload as you can do over WiFi and finally the data must be treated over third-part system.  
 
+## Architecture Schema
+
+![sdf](./docs/gallery/Architecture.png)
+
