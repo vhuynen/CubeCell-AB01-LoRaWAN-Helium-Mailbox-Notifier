@@ -1,4 +1,4 @@
-# HelTec-AB01-LoRaWAN-Helium-Mailbox-Notifier
+# HelTec-Cube-LoRaWAN-Helium-Mailbox-Notifier
 
 It's an IoT DIY project which notifies you when you have received a parcel or a letter in your letterbox. It's the same projet that [ESP32-CAM-Mailbox-Notifier](https://github.com/vhuynen/ESP32-CAM-Mailbox-Notifier) but designed for long range distance.
 
