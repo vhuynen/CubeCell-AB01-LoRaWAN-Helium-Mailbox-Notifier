@@ -12,9 +12,9 @@
 #include "Arduino.h"
 
 /* OTAA settings from HELIUM Network*/
-uint8_t devEui[] = { };
-uint8_t appEui[] = { };
-uint8_t appKey[] = { };
+uint8_t devEui[] = {  };
+uint8_t appEui[] = {  };
+uint8_t appKey[] = {  };
 
 /* ABP para*/
 uint8_t nwkSKey[] = {};
@@ -140,7 +140,7 @@ void loop()
         goToDeepSleep();
       } else if (millis() > overtime_open_door) {
         if (ENABLE_SERIAL) {
-          Serial.println("Doors have been opened too long when you have turned on the ESP32-CAM.\nReboot the ESP32-CAM to reinitialize it !");
+          Serial.println("Doors have been opened too long when you have turned on the ESP32-CAM.\nReboot the MCU to reinitialize it !");
         }
         if (ENABLE_LORAWAN) {
           appData[0] = 0x03;
@@ -156,7 +156,7 @@ void loop()
         while (digitalRead(pinDoor) == 0  || digitalRead(pinFlipDoor) == 0)  {
           if (millis() > currentMillis + overtime_open_door) {
             if (ENABLE_SERIAL) {
-              Serial.println("Doors have been opened too long time when you have fetched your mail.\nReboot the ESP32 for reinitialize it !");
+              Serial.println("Doors have been opened too long time when you have fetched your mail.\nReboot the MCU for reinitialize it !");
             }
             if (ENABLE_LORAWAN) {
               appData[0] = 0x04;
@@ -202,7 +202,7 @@ void loop()
       if (millis() > currentMillis + overtime_open_door) {
         // Send error
         if (ENABLE_SERIAL) {
-          Serial.println("Doors have been opened too long time by the postman.\nReboot the ESP32 for reinitialize it !");
+          Serial.println("Doors have been opened too long time by the postman.\nReboot the MCU for reinitialize it !");
         }
         if (ENABLE_LORAWAN) {
           appData[0] = 0x05;
