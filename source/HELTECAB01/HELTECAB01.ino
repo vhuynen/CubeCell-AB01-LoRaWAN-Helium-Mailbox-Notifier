@@ -106,32 +106,7 @@ void loop()
     if (wake_count == 0) {
       if (digitalRead(pinDoor) == 1 && digitalRead(pinFlipDoor) == 1) {
         if (ENABLE_LORAWAN) {
-          // Initialize LaRaWAN settings
-          LoRaWAN.begin(LORAWAN_CLASS, ACTIVE_REGION);
-
-          //Enable ADR
-          LoRaWAN.setAdaptiveDR(true);
-
-          while (1) {
-            if (ENABLE_SERIAL) {
-              Serial.print("JOINING... ");
-            }
-            LoRaWAN.joinOTAA(appEui, appKey, devEui);
-            if (!LoRaWAN.isJoined()) {
-              if (ENABLE_SERIAL) {
-                Serial.println("JOIN FAILED!");
-              }
-            } else {
-              if (ENABLE_LORAWAN) {
-                appData[0] = 0x06;
-                LoRaWAN.send(1, &appData[0], 2, false);
-              }
-              if (ENABLE_SERIAL) {
-                Serial.println("JOINED");
-              }
-              break;
-            }
-          }
+          joinHeliumNetwork();
         }
         // Only if all doors are closed
         if (ENABLE_SERIAL) {
@@ -143,6 +118,7 @@ void loop()
           Serial.println("Doors have been opened too long when you have turned on the ESP32-CAM.\nReboot the MCU to reinitialize it !");
         }
         if (ENABLE_LORAWAN) {
+          joinHeliumNetwork();
           appData[0] = 0x03;
           LoRaWAN.send(1, &appData[0], 2, false);
         }
