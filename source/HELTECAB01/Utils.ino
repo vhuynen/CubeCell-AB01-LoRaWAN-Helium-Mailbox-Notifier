@@ -42,16 +42,28 @@ void joinHeliumNetwork() {
         Serial.println("JOIN FAILED!");
       }
     } else {
-      if (ENABLE_LORAWAN) {
-        appData[0] = 0x06;
-        LoRaWAN.send(1, &appData[0], 2, false);
-      }
       if (ENABLE_SERIAL) {
         Serial.println("JOINED");
       }
       break;
     }
   }
+}
 
-
+/* Prepares the payload of the frame */
+uint8_t prepareTxFrame(char code, boolean setVoltage) {
+  appData[0] = code;
+  if (setVoltage) {
+    batteryVoltage = getBatteryVoltage();
+    if (ENABLE_SERIAL) {
+      Serial.println("Voltage in mV: " + batteryVoltage);
+    }
+    appData[1] = highByte(batteryVoltage);
+    appData[2] = lowByte(batteryVoltage);
+  }
+  if (!setVoltage) {
+    return 1;
+  } else {
+    return 3;
+  }
 }

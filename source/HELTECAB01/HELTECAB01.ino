@@ -1,4 +1,4 @@
-//###################### Vincent HUYNEN ########################/
+//###################### Vincent H, 2, false);##################/
 //################## vincent.huynen@gmail.com ##################/
 //######################### DECEMBER 2021 ######################/
 //#################### CubeCell HELTEC AB01 ####################/
@@ -8,8 +8,8 @@
   LoRaWan Mailbox Notifier
 */
 
-#include "LoRaWanMinimal_APP.h"
 #include "Arduino.h"
+#include "LoRaWan_Easy.h"
 
 /* OTAA settings from HELIUM Network*/
 uint8_t devEui[] = {  };
@@ -48,8 +48,6 @@ bool loraWanAdr = LORAWAN_ADR;
 bool isTxConfirmed = LORAWAN_UPLINKMODE;
 uint8_t appPort = 1;
 uint8_t confirmedNbTrials = 4;
-/* User application data */
-uint8_t appData[LORAWAN_APP_DATA_MAX_SIZE];
 
 void onWakeUpByFlipDoor()
 {
@@ -107,6 +105,7 @@ void loop()
       if (digitalRead(pinDoor) == 1 && digitalRead(pinFlipDoor) == 1) {
         if (ENABLE_LORAWAN) {
           joinHeliumNetwork();
+          LoRaWAN.send(prepareTxFrame(0x06, true), 1, false);
         }
         // Only if all doors are closed
         if (ENABLE_SERIAL) {
@@ -119,8 +118,7 @@ void loop()
         }
         if (ENABLE_LORAWAN) {
           joinHeliumNetwork();
-          appData[0] = 0x03;
-          LoRaWAN.send(1, &appData[0], 2, false);
+          LoRaWAN.send(prepareTxFrame(0x03, false), 2, false);
         }
         goToDeepSleepError();
       }
@@ -135,8 +133,7 @@ void loop()
               Serial.println("Doors have been opened too long time when you have fetched your mail.\nReboot the MCU for reinitialize it !");
             }
             if (ENABLE_LORAWAN) {
-              appData[0] = 0x04;
-              LoRaWAN.send(1, &appData[0], 2, false);
+              LoRaWAN.send(prepareTxFrame(0x04, false), 2, false);
             }
             goToDeepSleepError();
             break;
@@ -159,8 +156,7 @@ void loop()
             Serial.println("You have received a parcel !");
           }
           if (ENABLE_LORAWAN) {
-            appData[0] = 0x02;
-            LoRaWAN.send(1, &appData[0], 2, false);
+            LoRaWAN.send(prepareTxFrame(0x02, true), 2, false);
           }
         }
         if (pinWakeUp == pinFlipDoor) {
@@ -168,8 +164,7 @@ void loop()
             Serial.println("You have received a letter !");
           }
           if (ENABLE_LORAWAN) {
-            appData[0] = 0x01;
-            LoRaWAN.send(1, &appData[0], 2, false);
+            LoRaWAN.send(prepareTxFrame(0x01, true), 2, false);
           }
         }
         // Everythings is OK, you can sleep quietly
@@ -181,8 +176,7 @@ void loop()
           Serial.println("Doors have been opened too long time by the postman.\nReboot the MCU for reinitialize it !");
         }
         if (ENABLE_LORAWAN) {
-          appData[0] = 0x05;
-          LoRaWAN.send(1, &appData[0], 2, false);
+          LoRaWAN.send(prepareTxFrame(0x05, false), 2, false);
         }
         // Something wring, going to sleep until reset or restart
         goToDeepSleepError();
