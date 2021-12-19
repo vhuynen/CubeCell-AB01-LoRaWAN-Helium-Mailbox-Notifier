@@ -1,4 +1,4 @@
-//###################### Vincent H, 2, false);##################/
+//####################### Vincent Huynen #######################/
 //################## vincent.huynen@gmail.com ##################/
 //######################### DECEMBER 2021 ######################/
 //#################### CubeCell HELTEC AB01 ####################/
@@ -12,9 +12,9 @@
 #include "LoRaWan_Easy.h"
 
 /* OTAA settings from HELIUM Network*/
-uint8_t devEui[] = {  };
-uint8_t appEui[] = {  };
-uint8_t appKey[] = {  };
+uint8_t devEui[] = { 0x1A, 0xDB, 0xE9, 0xC1, 0x6F, 0x19, 0x3A, 0x54 };
+uint8_t appEui[] = { 0xBF, 0x25, 0x7A, 0xD0, 0x6E, 0x48, 0xBD, 0xEE };
+uint8_t appKey[] = { 0xA2, 0x09, 0x8F, 0xE5, 0x0F, 0xD1, 0x1F, 0x1D, 0xFF, 0x02, 0x34, 0x30, 0xA8, 0x77, 0x11, 0x8E };
 
 /* ABP para*/
 uint8_t nwkSKey[] = {};
@@ -22,10 +22,10 @@ uint8_t appSKey[] = {};
 uint32_t devAddr =  (uint32_t)0x00;
 
 int wake_count = 0;
-int batteryVoltage, batteryLevel;
+int batteryVoltage;
 
 // Control properties
-long overtime_open_door = 10000;
+long overtime_open_door = 20000;
 
 // Pin which handle the wake up
 int pinFlipDoor = GPIO1;
@@ -35,8 +35,8 @@ unsigned long currentMillis = 0;
 
 uint8_t lowpower = 0;
 
-bool ENABLE_SERIAL = true; // enable serial debug output here if required
-bool ENABLE_LORAWAN = true; // enable serial debug output here if required
+bool ENABLE_SERIAL = true; // Enable serial debug output here if required
+bool ENABLE_LORAWAN = true; // Disable LoRaWAN here in debug mode
 
 /* LoRaWan settings */
 uint16_t userChannelsMask[6] = { 0x00FF, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000 };
@@ -44,7 +44,6 @@ LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
 DeviceClass_t  loraWanClass = LORAWAN_CLASS;
 bool overTheAirActivation = LORAWAN_NETMODE;
 bool loraWanAdr = LORAWAN_ADR;
-//bool keepNet = LORAWAN_NET_RESERVE;
 bool isTxConfirmed = LORAWAN_UPLINKMODE;
 uint8_t appPort = 1;
 uint8_t confirmedNbTrials = 4;
@@ -114,7 +113,7 @@ void loop()
         goToDeepSleep();
       } else if (millis() > overtime_open_door) {
         if (ENABLE_SERIAL) {
-          Serial.println("Doors have been opened too long when you have turned on the ESP32-CAM.\nReboot the MCU to reinitialize it !");
+          Serial.println("Doors have been opened too long when you have turned on the MCU.\nReboot the MCU to reinitialize it !");
         }
         if (ENABLE_LORAWAN) {
           joinHeliumNetwork();
@@ -156,7 +155,7 @@ void loop()
             Serial.println("You have received a parcel !");
           }
           if (ENABLE_LORAWAN) {
-            LoRaWAN.send(prepareTxFrame(0x02, true), 2, false);
+            LoRaWAN.send(prepareTxFrame(0x02, true), 1, false);
           }
         }
         if (pinWakeUp == pinFlipDoor) {
@@ -164,7 +163,7 @@ void loop()
             Serial.println("You have received a letter !");
           }
           if (ENABLE_LORAWAN) {
-            LoRaWAN.send(prepareTxFrame(0x01, true), 2, false);
+            LoRaWAN.send(prepareTxFrame(0x01, true), 1, false);
           }
         }
         // Everythings is OK, you can sleep quietly
@@ -178,7 +177,7 @@ void loop()
         if (ENABLE_LORAWAN) {
           LoRaWAN.send(prepareTxFrame(0x05, false), 2, false);
         }
-        // Something wring, going to sleep until reset or restart
+        // Something wrong, going to sleep until reset or restart
         goToDeepSleepError();
       }
     }
