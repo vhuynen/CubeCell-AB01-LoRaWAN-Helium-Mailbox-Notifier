@@ -29,8 +29,10 @@ void joinHeliumNetwork() {
   // Initialize LaRaWAN settings
   LoRaWAN.begin(LORAWAN_CLASS, ACTIVE_REGION);
 
-  //Enable ADR
+  // Enable ADR
   LoRaWAN.setAdaptiveDR(true);
+  // Set Fixed Data Rate
+  //LoRaWAN.setFixedDR(0);  
 
   while (1) {
     if (ENABLE_SERIAL) {
