@@ -22,18 +22,18 @@ function Decoder(bytes, port, uplink_info) {
 			};
 		case 0x04:
 			return {
-				msg: "\n[ERROR] Doors have been opened too long when you have turned on the MCU."
-					+ "Reboot the MCU to reinitialize it !",
+				msg: "[ERROR] Doors have been opened too long when you have turned on the MCU."
+					+ "\nReboot the MCU to reinitialize it !",
 			};
 		case 0x05:
 			return {
-				msg: "\n[ERROR] Doors have been opened too long when you have fetched your mail."
-					+ "Reboot the MCU to re-initialize it !",
+				msg: "[ERROR] Doors have been opened too long when you have fetched your mail."
+					+ "\nReboot the MCU to re-initialize it !",
 			};
 		case 0x06:
 			return {
-				msg: "\n[ERROR] Doors have been opened too long by the postman."
-					+ "Reboot the MCU to reinitialize it !",
+				msg: "[ERROR] Doors have been opened too long by the postman."
+					+ "\nReboot the MCU to reinitialize it !",
 			};
 		case 0x01:
 			return {
