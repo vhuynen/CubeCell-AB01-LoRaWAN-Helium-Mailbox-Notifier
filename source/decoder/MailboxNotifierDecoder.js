@@ -14,7 +14,7 @@ function Decoder(bytes, port, uplink_info) {
 			};
 		case 0x02:
 			return {
-				msg: "Uplink n°" + uplink_info.fcnt + "\nYou have got maybe a parcel !\nBattery Voltage: "
+				msg: "Uplink n°" + uplink_info.fcnt + "\nYou have got maybe a package !\nBattery Voltage: "
 					+ ((bytes[1] << 8) + bytes[2]) / 1000
 					+ " Volts\nBattery Level: "
 					+ ((((((bytes[1] << 8) + bytes[2]) / 1000) - 3.7) / (4.2 - 3.7)) * 100).toPrecision(4)
@@ -22,18 +22,18 @@ function Decoder(bytes, port, uplink_info) {
 			};
 		case 0x04:
 			return {
-				msg: "[ERROR] Doors have been opened too long when you have turned on the MCU."
-					+ "\nReboot the MCU to reinitialize it !",
+				msg: "[ERROR] Doors have been opened for too long since you have powered the device on."
+					+ "\nReboot the device to reinitialize it !",
 			};
 		case 0x05:
 			return {
-				msg: "[ERROR] Doors have been opened too long when you have fetched your mail."
-					+ "\nReboot the MCU to re-initialize it !",
+				msg: "[ERROR] Doors have been opened for too long since you have fetched your mail."
+					+ "\nReboot the device to re-initialize it !",
 			};
 		case 0x06:
 			return {
-				msg: "[ERROR] Doors have been opened too long by the postman."
-					+ "\nReboot the MCU to reinitialize it !",
+				msg: "[ERROR] Doors have been opened for too long by the postman."
+					+ "\nReboot the device to reinitialize it !",
 			};
 		case 0x01:
 			return {
