@@ -157,6 +157,8 @@ SELECT VALUE decoded.payload.msg FROM 'topic/gateway' where dev_eui = '6078F99C6
 
 To finish, select the SNS Push Notification previously created, choose the message format **RAW** and apply an IAM roles to grant the IoT Core to access it.
 
+![Rule](./docs/gallery/AWS_IoT_Core_Rule.png)
+
 Below, the hierarchical view of the AWS components involved:
 
 ```
