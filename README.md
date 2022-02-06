@@ -6,7 +6,7 @@ This project uses an **HelTec AB01** LoRaWAN module to send data over an LoRaWAN
 The compromise over this kind of system is that you can't send heavy payload as you are able to do over WiFi. Finally the data must be treated over third-part system.
 
 ## Table of Contents
----
+
 
 <!-- TOC -->
 
@@ -23,7 +23,7 @@ The compromise over this kind of system is that you can't send heavy payload as 
         - [AWS IoT Core](#aws-iot-core)
         - [Telegram Lambda Function](#telegram-lambda-function)
         - [Twilio Lambda Function](#twilio-lambda-function)
-        - [Amazon SNS - Service Notification Service](#amazon-sns---service-notification-service)
+        - [Amazon SNS - Service Notification Service](#amazon-snsservice-notification-service)
         - [Rules](#rules)
     - [Heltec AB01](#heltec-ab01)
         - [Prerequisite](#prerequisite)
@@ -40,11 +40,11 @@ The compromise over this kind of system is that you can't send heavy payload as 
 <!-- /TOC -->
 
 ## Architecture Schema
----
+
 ![architecture](./docs/gallery/Architecture.png)
 
 ## Helium Organization
----
+
 
 Before going further, you should verify that you are within the coverage of the [Helium Network](https://explorer.helium.com/). Your device should be at the proximity of a least one gateway (350 meters). If not, this allows you to expand the network with your own gateway. After that, you will have to create an account on the [Helium Console](https://console.helium.com/).
 
@@ -115,14 +115,14 @@ Right below, the basic flow used as part of the mailbox project :
 ![Flow](./docs/gallery/mailbox_Helium_Flow.png)
 
 ## Telegram API
----
+
 
 First, you will have to create your bot thanks to the [BotFather](https:telegram.me/botfather). Side note: there's no need to describe how to do that, there is solid content about this topic on the Web : [send notifications to your smartphone using a Telagram bot](http://solvit.io/0f9c61a)
 
 Keep carefully your **API Key** and your **Chat ID**, they will be required to set the AWS Lambda function later.
 
 ## Amazon Web Services
----
+
 
 ### AWS IoT Core
 
@@ -168,7 +168,7 @@ AWS IoT Core
 ```
 
 ## Heltec AB01
----
+
 
 ### Prerequisite
 
@@ -187,13 +187,13 @@ AWS IoT Core
 ### Power-Saving
 
 ## Notifications in action
----
+
 
 |Telegram Notification|SMS Twilio Notification|
-|:-----------------:|:-----------------:|
+|:--------------:|:-----------------:|
 |![Telegram](./docs/gallery/Telegram_Notification.png)|![Twilio](./docs/gallery/Twilio_Notification.png)|
 
 ## Electic Schema
----
+
 
 ![Electic Schema](./docs/gallery/mailbox_HELTEC_AB01_v1.png)
