@@ -168,7 +168,9 @@ AWS IoT Core
                   └── Twilio Lambda
 ```
 
-## [Heltec AB01](https://heltec.org/project/htcc-ab01/) 
+## Heltec AB01
+
+https://heltec.org/project/htcc-ab01/
 
 ### Prerequisite
 
