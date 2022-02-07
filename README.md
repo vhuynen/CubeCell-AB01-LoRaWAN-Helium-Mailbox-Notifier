@@ -176,7 +176,7 @@ AWS IoT Core
 
 Before to upload the program into the device, you must set your own **devEui**, **appEui** and **appKey** properties retreived from the Helium Console before.
 
-Finally, set correctly your project configuration file [platformio.ini](https://github.com/helium/longfi-platformio/blob/master/Heltec-CubeCell-Board/examples/cubecell-helium-us915-basic/platformio.ini) to be suitable with your region frequency and more.
+Finally, set correctly your project configuration file [platformio.ini](https://github.com/helium/longfi-platformio/blob/master/Heltec-CubeCell-Board/examples/cubecell-helium-us915-basic/platformio.ini) to be compatible with your region frequency and more.
 
 ### Data Format
 
