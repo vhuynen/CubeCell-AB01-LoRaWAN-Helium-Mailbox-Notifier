@@ -6,15 +6,16 @@ function Decoder(bytes, port, uplink_info) {
 	switch (data) {
 		case 0x03:
 			return {
-				msg: "Uplink n°" + uplink_info.fcnt + "\nYou have got mail !\nBattery Voltage: "
+				msg: "Uplink n°" + uplink_info.fcnt + "\n[OK] You have got mail !\nBattery Voltage: "
 					+ ((bytes[1] << 8) + bytes[2]) / 1000
 					+ " Volts\nBattery Level: "
 					+ ((((((bytes[1] << 8) + bytes[2]) / 1000) - 3.7) / (4.2 - 3.7)) * 100).toPrecision(4)
 					+ "%\nHave a nice day !",
+					code : 03
 			};
 		case 0x02:
 			return {
-				msg: "Uplink n°" + uplink_info.fcnt + "\nYou have got maybe a package !\nBattery Voltage: "
+				msg: "Uplink n°" + uplink_info.fcnt + "\n[OK] You have got maybe a package !\nBattery Voltage: "
 					+ ((bytes[1] << 8) + bytes[2]) / 1000
 					+ " Volts\nBattery Level: "
 					+ ((((((bytes[1] << 8) + bytes[2]) / 1000) - 3.7) / (4.2 - 3.7)) * 100).toPrecision(4)

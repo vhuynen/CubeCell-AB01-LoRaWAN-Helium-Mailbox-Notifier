@@ -11,31 +11,31 @@ The compromise over this kind of system is that you can't send heavy payload as 
 <!-- TOC -->
 
 - [HelTec-Cube-LoRaWAN-Helium-Mailbox-Notifier](#heltec-cube-lorawan-helium-mailbox-notifier)
-    - [Table of Contents](#table-of-contents)
-    - [Architecture Schema](#architecture-schema)
-    - [Helium Organization](#helium-organization)
-        - [Registering the device in the blockchain](#registering-the-device-in-the-blockchain)
-        - [Setting the AWS IoT Core Integration](#setting-the-aws-iot-core-integration)
-        - [Decoder Function](#decoder-function)
-        - [Flows](#flows)
-    - [Telegram API](#telegram-api)
-    - [Amazon Web Services](#amazon-web-services)
-        - [AWS IoT Core](#aws-iot-core)
-        - [Telegram Lambda Function](#telegram-lambda-function)
-        - [Twilio Lambda Function](#twilio-lambda-function)
-        - [Amazon SNS - Simple Notification Service](#amazon-sns---simple-notification-service)
-        - [Rules](#rules)
-    - [Heltec AB01](#heltec-ab01)
-        - [Prerequisite](#prerequisite)
-        - [Data Format](#data-format)
-        - [First Byte values](#first-byte-values)
-        - [Second and Third Byte](#second-and-third-byte)
-        - [Power up](#power-up)
-        - [Fetch mail](#fetch-mail)
-        - [You have got mail](#you-have-got-mail)
-        - [Power-Saving](#power-saving)
-    - [Notifications in action](#notifications-in-action)
-    - [Electic Schema](#electic-schema)
+  - [Table of Contents](#table-of-contents)
+  - [Architecture Schema](#architecture-schema)
+  - [Helium Organization](#helium-organization)
+    - [Registering the device in the blockchain](#registering-the-device-in-the-blockchain)
+    - [Setting the AWS IoT Core Integration](#setting-the-aws-iot-core-integration)
+    - [Decoder Function](#decoder-function)
+    - [Flows](#flows)
+  - [Telegram API](#telegram-api)
+  - [Amazon Web Services](#amazon-web-services)
+    - [AWS IoT Core](#aws-iot-core)
+    - [Telegram Lambda Function](#telegram-lambda-function)
+    - [Twilio Lambda Function](#twilio-lambda-function)
+    - [Amazon SNS - Simple Notification Service](#amazon-sns---simple-notification-service)
+    - [Rules](#rules)
+  - [Heltec AB01](#heltec-ab01)
+    - [Prerequisite](#prerequisite)
+    - [Data Format](#data-format)
+    - [First Byte values](#first-byte-values)
+    - [Second and Third Byte](#second-and-third-byte)
+    - [Power up](#power-up)
+    - [Fetch mail](#fetch-mail)
+    - [You have got mail](#you-have-got-mail)
+    - [Power-Saving](#power-saving)
+  - [Notifications in action](#notifications-in-action)
+  - [Electic Schema](#electic-schema)
 
 <!-- /TOC -->
 
@@ -72,38 +72,53 @@ In my case, the Uplink messages from Helium are published into a Topic named **t
 ``` js
 function Decoder(bytes, port, uplink_info) {
 
-  //decode message type form payload
-  var data = bytes[0];
-  //output decoded message depending on the data
-  switch (data) {
-    case 0x03:
-      return {
-msg: "Uplink n°" + uplink_info.fcnt + "\nYou have got mail !\nBattery Voltage: " + ((bytes[1]  << 8 ) + bytes[2])  /  1000  + " Volts\nBattery Level: " + ((((((bytes[1]  << 8 ) + bytes[2])  /  1000) - 3.7) / (4.2 - 3.7)) * 100).toPrecision(4) + "%\nHave a nice day !",
-      };
-    case 0x02:
-      return {
-msg: "Uplink n°" + uplink_info.fcnt + "\nYou have got maybe a parcel !\nBattery Voltage: " + ((bytes[1]  << 8 ) + bytes[2])  /  1000  + " Volts\nBattery Level: " + ((((((bytes[1]  << 8 ) + bytes[2])  /  1000) - 3.7) / (4.2 - 3.7)) * 100).toPrecision(4) + "%\nHave a nice day !",
-      };
-    case 0x04:
-      return {
-msg: "\n[ERROR] Doors have been opened for too long since you have powered the device on. Reboot the device to reinitialize it !",
-      };
-    case 0x05:
-      return {
-msg: "\n[ERROR] Doors have been opened for too long since you have fetched your mail. Reboot the device to re-initialize it !",
-      };
-    case 0x06:
-      return {
-msg: "\n[ERROR] Doors have been opened for too long by the postman. Reboot the device to reinitialize it !",
-      };
-    case 0x01:
-      return {
-msg: "Uplink n°" + uplink_info.fcnt + "\nYou have joined the people's network !\nBattery Voltage: " + ((bytes[1]  << 8 ) + bytes[2])  /  1000  + " Volts\nBattery Level: " + ((((((bytes[1]  << 8 ) + bytes[2])  /  1000) - 3.7) / (4.2 - 3.7)) * 100).toPrecision(4) + "%\nHave a nice day !",
-
-      };
-    default:
-      return {msg: "\nunknown"};
-  }
+	//decode message type form payload
+	var data = bytes[0];
+	//output decoded message depending on the data
+	switch (data) {
+		case 0x03:
+			return {
+				msg: "Uplink n°" + uplink_info.fcnt + "\n[OK] You have got mail !\nBattery Voltage: "
+					+ ((bytes[1] << 8) + bytes[2]) / 1000
+					+ " Volts\nBattery Level: "
+					+ ((((((bytes[1] << 8) + bytes[2]) / 1000) - 3.7) / (4.2 - 3.7)) * 100).toPrecision(4)
+					+ "%\nHave a nice day !",
+					code : 03
+			};
+		case 0x02:
+			return {
+				msg: "Uplink n°" + uplink_info.fcnt + "\n[OK] You have got maybe a package !\nBattery Voltage: "
+					+ ((bytes[1] << 8) + bytes[2]) / 1000
+					+ " Volts\nBattery Level: "
+					+ ((((((bytes[1] << 8) + bytes[2]) / 1000) - 3.7) / (4.2 - 3.7)) * 100).toPrecision(4)
+					+ "%\nHave a nice day !",
+			};
+		case 0x04:
+			return {
+				msg: "[ERROR] Doors have been opened for too long since you have powered the device on."
+					+ "\nReboot the device to reinitialize it !",
+			};
+		case 0x05:
+			return {
+				msg: "[ERROR] Doors have been opened for too long since you have fetched your mail."
+					+ "\nReboot the device to re-initialize it !",
+			};
+		case 0x06:
+			return {
+				msg: "[ERROR] Doors have been opened for too long by the postman."
+					+ "\nReboot the device to reinitialize it !",
+			};
+		case 0x01:
+			return {
+				msg: "Uplink n°" + uplink_info.fcnt + "\nYou have joined the people's network !\nBattery Voltage: "
+					+ ((bytes[1] << 8) + bytes[2]) / 1000
+					+ " Volts\nBattery Level: "
+					+ ((((((bytes[1] << 8) + bytes[2]) / 1000) - 3.7) / (4.2 - 3.7)) * 100).toPrecision(4)
+					+ "%\nHave a nice day !",
+			};
+		default:
+			return { msg: "\nunknown" };
+	}
 }
 ```
 
@@ -134,6 +149,31 @@ You must declare two environment variables to set your Telegram lambda with the 
 
 - _TELEGRAM_CHAT_ID_ : **\<Chat ID\>**
 - _TELEGRAM_TOKEN_ : **bot\<API Key\>**
+
+Below, the Python code to send message over Telegram for my Mailbox project :
+``` python
+import json
+import os
+import requests
+
+TELEGRAM_TOKEN =os.environ.get("TELEGRAM_TOKEN")
+TELEGRAM_CHAT_ID=os.environ.get("TELEGRAM_CHAT_ID")
+
+def lambda_handler(event, context):
+    
+    sns_msg = event['Records'][0]['Sns']['Message']; 
+    telegram_msg = sns_msg.replace("[ERROR]", "\u26A0").replace("[OK]", "\U0001F4EC"); # Mailbox Project
+
+    bot_request = 'https://api.telegram.org/' + TELEGRAM_TOKEN + '/sendMessage?chat_id=' + TELEGRAM_CHAT_ID + '&text=' + telegram_msg
+    print(event)
+    print(bot_request)
+    response = requests.get(bot_request) 
+    return {
+        'statusCode': response.status_code,
+      'msg': json.dumps('Message send with successed !'),
+       'body': json.dumps(response.json())
+  }
+```
 
 ### Twilio Lambda Function
 
