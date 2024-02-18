@@ -8,36 +8,32 @@ The compromise over this kind of system is that you can't send heavy payload as 
 
 ## Table of Contents
 
-<!-- TOC -->
-
 - [HelTec-Cube-LoRaWAN-Helium-Mailbox-Notifier](#heltec-cube-lorawan-helium-mailbox-notifier)
-  - [Table of Contents](#table-of-contents)
-  - [Architecture Schema](#architecture-schema)
-  - [Helium Organization](#helium-organization)
-    - [Registering the device in the blockchain](#registering-the-device-in-the-blockchain)
-    - [Setting the AWS IoT Core Integration](#setting-the-aws-iot-core-integration)
-    - [Decoder Function](#decoder-function)
-    - [Flows](#flows)
-  - [Telegram API](#telegram-api)
-  - [Amazon Web Services](#amazon-web-services)
-    - [AWS IoT Core](#aws-iot-core)
-    - [Telegram Lambda Function](#telegram-lambda-function)
-    - [Twilio Lambda Function](#twilio-lambda-function)
-    - [Amazon SNS - Simple Notification Service](#amazon-sns---simple-notification-service)
-    - [Rules](#rules)
-  - [Heltec AB01](#heltec-ab01)
-    - [Prerequisite](#prerequisite)
-    - [Data Format](#data-format)
-    - [First Byte values](#first-byte-values)
-    - [Second and Third Byte](#second-and-third-byte)
-    - [Power up](#power-up)
-    - [Fetch mail](#fetch-mail)
-    - [You have got mail](#you-have-got-mail)
-    - [Power-Saving](#power-saving)
-  - [Notifications in action](#notifications-in-action)
-  - [Electic Schema](#electic-schema)
-
-<!-- /TOC -->
+	- [Table of Contents](#table-of-contents)
+	- [Architecture Schema](#architecture-schema)
+	- [Helium Organization](#helium-organization)
+		- [Registering the device in the blockchain](#registering-the-device-in-the-blockchain)
+		- [Setting the AWS IoT Core Integration](#setting-the-aws-iot-core-integration)
+		- [Decoder Function](#decoder-function)
+		- [Flows](#flows)
+	- [Telegram API](#telegram-api)
+	- [Amazon Web Services](#amazon-web-services)
+		- [AWS IoT Core](#aws-iot-core)
+		- [Telegram Lambda Function](#telegram-lambda-function)
+		- [Twilio Lambda Function](#twilio-lambda-function)
+		- [Amazon SNS - Simple Notification Service](#amazon-sns---simple-notification-service)
+		- [Rules](#rules)
+	- [Heltec AB01](#heltec-ab01)
+		- [Prerequisite](#prerequisite)
+		- [Data Format](#data-format)
+		- [First Byte values](#first-byte-values)
+		- [Second and Third Byte](#second-and-third-byte)
+		- [Power up](#power-up)
+		- [Fetch mail](#fetch-mail)
+		- [You have got mail](#you-have-got-mail)
+		- [Power-Saving](#power-saving)
+	- [Notifications in action](#notifications-in-action)
+	- [Electic Schema](#electic-schema)
 
 ## Architecture Schema
 
@@ -131,7 +127,7 @@ Right below, the basic flow used as part of the mailbox project :
 
 ## Telegram API
 
-First, you will have to create your bot thanks to the [BotFather](https:telegram.me/botfather). Side note: there's no need to describe how to do that, there is solid content about this topic on the Web : [send notifications to your smartphone using a Telagram bot](http://solvit.io/0f9c61a)
+First, you will have to create your bot thanks to the [BotFather](https:telegram.me/botfather). Side note: there's no need to describe how to do that, there is solid content about this topic on the Web.
 
 Keep carefully your **API Key** and your **Chat ID**, they will be required to set the AWS Lambda function later.
 
@@ -151,6 +147,7 @@ You must declare two environment variables to set your Telegram lambda with the 
 - _TELEGRAM_TOKEN_ : **bot\<API Key\>**
 
 Below, the Python code to send message over Telegram for my Mailbox project :
+
 ``` python
 import json
 import os
